@@ -2,9 +2,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "taller/actualizar-eliminartareas-yully" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "taller/actualizar-eliminartareas-yully" ]
 
 permissions:
   contents: read
