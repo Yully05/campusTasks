@@ -12,12 +12,23 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
   });
 
   async onModuleInit(): Promise<void> {
-    await this.pool.query(`
-      CREATE TABLE IF NOT EXISTS tareas (
-        id SERIAL PRIMARY KEY,
-        titulo TEXT NOT NULL
-      )
-    `);
+    const intentos = 15;
+    for (let intento = 1; intento <= intentos; intento++) {
+      try {
+        await this.pool.query(`
+          CREATE TABLE IF NOT EXISTS tareas (
+            id SERIAL PRIMARY KEY,
+            titulo TEXT NOT NULL
+          )
+        `);
+        return;
+      } catch (error) {
+        if (intento === intentos) {
+          throw error;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+    }
   }
 
   query<T extends QueryResultRow>(
